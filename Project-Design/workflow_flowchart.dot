@@ -1,0 +1,11 @@
+digraph G { fontname="Helvetica"; edge[fontname="Helvetica"]; node[fontname="Helvetica",shape=box,style="rounded,filled",fillcolor="#eef3fb",color="#4a6fa5"];
+label="Experiment Workflow"; labelloc=t; fontsize=18;
+s[label="Start",shape=oval,fillcolor="#dff0d8"]; load[label="Load diabetes.csv"]; eda[label="Exploratory data analysis"]; z[label="Replace invalid zeros with NaN"];
+split[label="Stratified train/test split (80/20, seed 42)"]; cap[label="IQR outlier caps fitted on train,\napplied to train and test"];
+pre[label="Preprocessor: median imputation + standard scaling"];
+q[label="Use SMOTE?",shape=diamond,fillcolor="#fff4e0",color="#c48a1a"];
+base[label="Baseline pipeline\n(no resampling)"]; sm[label="ImbPipeline with SMOTE\n(oversample training data only)"];
+fit[label="Train LR, DT, RF"]; ev[label="Evaluate on untouched test set\n(metrics + confusion matrix)"];
+cv[label="Repeat with 5×10 repeated stratified CV\non full dataset (main results)"]; cmp[label="Compare: mean ± SD,\nchange caused by SMOTE, recall box plot"];
+e[label="Report findings in paper",shape=oval,fillcolor="#dff0d8"];
+s->load->eda->z->split->cap->pre->q; q->base[label=" No"]; q->sm[label=" Yes"]; base->fit; sm->fit; fit->ev->cv->cmp->e; }

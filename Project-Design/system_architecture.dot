@@ -1,0 +1,8 @@
+digraph G { rankdir=LR; fontname="Helvetica"; node[fontname="Helvetica",shape=box,style="rounded,filled",fillcolor="#eef3fb",color="#4a6fa5"]; edge[color="#555555"];
+label="System Architecture – SMOTE on Imbalanced Diabetes Prediction"; labelloc=t; fontsize=18;
+subgraph cluster_d{label="Data layer";style="rounded,dashed"; src[label="Pima Indians Diabetes\n(Kaggle: sztuanakurun/diabates)\n768 rows · 8 features"]; }
+subgraph cluster_p{label="Preparation";style="rounded,dashed"; eda[label="EDA\nclass counts · box plots\ncorrelation heatmap"]; clean[label="Cleaning\ninvalid 0 → NaN\n(Glucose, BP, Skin, Insulin, BMI)"]; }
+subgraph cluster_e{label="Experiments";style="rounded,dashed"; ho[label="Exp. A: Hold-out\n80/20 stratified split\nIQR capping (train-fitted)"]; cv[label="Exp. B: Repeated Stratified CV\n5 folds × 10 repeats = 50 runs"]; }
+subgraph cluster_m{label="Model pipelines (scikit-learn / imbalanced-learn)";style="rounded,dashed"; pipe[label="Median imputer → StandardScaler\n→ [SMOTE, train folds only]\n→ LR | DT | RF\n(6 pipelines, seed 42)",fillcolor="#fff4e0",color="#c48a1a"]; }
+subgraph cluster_o{label="Outputs";style="rounded,dashed"; ev[label="Evaluation\nAccuracy · Precision · Recall\nF1 · ROC-AUC · confusion matrix"]; rep[label="Research paper\ntables & figures"]; }
+src->eda->clean; clean->ho; clean->cv; ho->pipe; cv->pipe; pipe->ev->rep; }

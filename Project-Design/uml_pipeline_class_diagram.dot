@@ -1,0 +1,15 @@
+digraph G { fontname="Helvetica"; node[fontname="Helvetica",shape=record,style=filled,fillcolor="#fbfbfb",color="#333333"]; edge[fontname="Helvetica",fontsize=10];
+label="UML Class Diagram – Model Pipeline Components"; labelloc=t; fontsize=18;
+Exp[label="{Experiment|+ X : DataFrame\l+ y : Series\l+ cv : RepeatedStratifiedKFold(5, 10, 42)\l+ scoring : dict\l|+ cross_validate()\l+ compare_with_baseline()\l}"];
+Imb[label="{ImbPipeline (imblearn)|+ steps : list\l|+ fit(X, y)\l+ predict(X)\l+ predict_proba(X)\l}"];
+Pipe[label="{Pipeline (sklearn)|+ steps : list\l|+ fit(X, y)\l+ predict(X)\l}"];
+CT[label="{ColumnTransformer|+ num : num_pipe\l+ cat : cat_pipe\l|+ fit_transform(X)\l+ transform(X)\l}"];
+Imp[label="{SimpleImputer|+ strategy = 'median'\l}"]; Sc[label="{StandardScaler|+ mean_, scale_\l}"];
+Sm[label="{SMOTE|+ random_state = 42\l|+ fit_resample(X, y)\l}"];
+Clf[label="{«interface» Classifier|+ fit(X, y)\l+ predict(X)\l}"];
+LR[label="{LogisticRegression|max_iter = 1000\l}"]; DT[label="{DecisionTreeClassifier|random_state = 42\l}"]; RF[label="{RandomForestClassifier|random_state = 42\l}"];
+Exp->Pipe[label=" evaluates 3",arrowhead=vee]; Exp->Imb[label=" evaluates 3",arrowhead=vee];
+Pipe->CT[arrowhead=diamond,dir=back,label=" 1"]; Imb->CT[arrowhead=diamond,dir=back,label=" 1"]; Imb->Sm[arrowhead=diamond,dir=back,label=" 1"];
+Pipe->Clf[arrowhead=diamond,dir=back]; Imb->Clf[arrowhead=diamond,dir=back];
+CT->Imp[arrowhead=diamond,dir=back]; CT->Sc[arrowhead=diamond,dir=back];
+LR->Clf[arrowhead=empty,style=dashed]; DT->Clf[arrowhead=empty,style=dashed]; RF->Clf[arrowhead=empty,style=dashed]; }
